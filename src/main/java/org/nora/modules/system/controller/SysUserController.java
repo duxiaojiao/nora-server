@@ -1,6 +1,7 @@
 package org.nora.modules.system.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.common.constlant.CommonConstant;
 import org.nora.common.responses.ResponseType;
 import org.nora.modules.system.entity.SysUser;
@@ -27,7 +28,7 @@ public class SysUserController {
 
 
 
-    @PostMapping(value = "saveOrUpdate")
+    @PostMapping(value = "addUser")
     public ResponseType<String> addUser(@RequestBody SysUser user) {
         ResponseType<String> response = new ResponseType<String>();
         try {
@@ -36,6 +37,15 @@ public class SysUserController {
         } catch (RuntimeException e) {
             response.setMsg(CommonConstant.Message.OPTION_FAILURE);
         }
+        return response;
+    }
+
+    @GetMapping(value = "queryUser")
+    public ResponseType<IPage<SysUser>> queryUser(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,@RequestParam(value = "search", defaultValue = "") String search){
+        ResponseType<IPage<SysUser>> response = new ResponseType<>();
+        IPage<SysUser> userIPage = sysUserService.queryUser(pageNum, pageSize, search);
+        response.success();
+        response.setData(userIPage);
         return response;
     }
 

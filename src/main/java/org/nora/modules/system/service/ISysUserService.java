@@ -1,5 +1,6 @@
 package org.nora.modules.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.modules.system.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,5 +20,12 @@ public interface ISysUserService extends IService<SysUser> {
      * @return
      */
     void addUser(SysUser user) throws  RuntimeException;
+
+    /**
+     * 通过关键词搜索分页
+     * @param search
+     * @return
+     */
+    IPage<SysUser> queryUser(Integer pageNum, Integer pageSize, String search);
 
 }

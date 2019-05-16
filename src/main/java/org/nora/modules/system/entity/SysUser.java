@@ -59,7 +59,7 @@ public class SysUser implements Serializable {
     /**
      * 是否锁定
      */
-    private Boolean lock;
+    private Boolean locked;
 
     /**
      * 创建者ID
