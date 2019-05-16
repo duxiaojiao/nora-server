@@ -1,4 +1,4 @@
-package org.nora.controller;
+package org.nora.modules.system.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
