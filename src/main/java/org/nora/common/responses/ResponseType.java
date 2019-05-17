@@ -60,6 +60,11 @@ public class ResponseType<T> implements Serializable {
         return self();
     }
 
+    public ResponseType success(T data) {
+        this.data=data;
+        return this.success();
+    }
+
     public ResponseType failure(String msg) {
         this.code = CommonConstant.ServerApp.SERVER_RET_FAILURE;
         this.msg = msg;

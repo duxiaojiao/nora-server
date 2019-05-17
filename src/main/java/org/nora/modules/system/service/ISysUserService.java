@@ -28,4 +28,11 @@ public interface ISysUserService extends IService<SysUser> {
      */
     IPage<SysUser> queryUser(Integer pageNum, Integer pageSize, String search);
 
+    /**
+     * 删除用户
+     * @param guid
+     * @return
+     */
+    void deleteUser(String guid);
+
 }

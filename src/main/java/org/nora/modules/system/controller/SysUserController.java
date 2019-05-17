@@ -9,7 +9,6 @@ import org.nora.modules.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 
 /**
  * <p>
@@ -25,7 +24,6 @@ public class SysUserController {
 
     @Autowired
     private ISysUserService sysUserService;
-
 
 
     @PostMapping(value = "addUser")
@@ -44,8 +42,15 @@ public class SysUserController {
     public ResponseType<IPage<SysUser>> queryUser(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,@RequestParam(value = "search", defaultValue = "") String search){
         ResponseType<IPage<SysUser>> response = new ResponseType<>();
         IPage<SysUser> userIPage = sysUserService.queryUser(pageNum, pageSize, search);
+        response.success(userIPage);
+        return response;
+    }
+
+    @PostMapping(value = "deleteUser")
+    public ResponseType<String> deleteUser(@RequestBody String guid) {
+        ResponseType<String> response = new ResponseType<String>();
+        sysUserService.deleteUser(guid);
         response.success();
-        response.setData(userIPage);
         return response;
     }
 
