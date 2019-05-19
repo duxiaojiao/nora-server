@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.nora.common.utils.GuidUtil;
 import org.nora.modules.system.entity.SysRole;
-import org.nora.modules.system.mapper.SysMenuMapper;
 import org.nora.modules.system.mapper.SysRoleMapper;
 import org.nora.modules.system.service.ISysRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,7 +28,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public void addRole(SysRole role) throws RuntimeException {
-        role.setGuid(GuidUtil.GenerateGuid());
         sysRoleMapper.insert(role);
     }
 

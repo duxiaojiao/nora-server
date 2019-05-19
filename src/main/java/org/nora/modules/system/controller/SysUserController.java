@@ -9,6 +9,8 @@ import org.nora.modules.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 /**
  * <p>
@@ -38,6 +40,18 @@ public class SysUserController {
         return response;
     }
 
+    @PostMapping(value = "editUser")
+    public ResponseType<String> editUser(@RequestBody SysUser user) {
+        ResponseType<String> response = new ResponseType<String>();
+        try {
+            sysUserService.editUser(user);
+            response.setMsg(CommonConstant.Message.OPTION_SUCCESS);
+        } catch (RuntimeException e) {
+            response.setMsg(CommonConstant.Message.OPTION_FAILURE);
+        }
+        return response;
+    }
+
     @GetMapping(value = "queryUser")
     public ResponseType<IPage<SysUser>> queryUser(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,@RequestParam(value = "search", defaultValue = "") String search){
         ResponseType<IPage<SysUser>> response = new ResponseType<>();
@@ -47,8 +61,9 @@ public class SysUserController {
     }
 
     @PostMapping(value = "deleteUser")
-    public ResponseType<String> deleteUser(@RequestBody String guid) {
+    public ResponseType<String> deleteUser(@RequestBody Map<String, Object> param) {
         ResponseType<String> response = new ResponseType<String>();
+        String guid = (String) param.get("guid");
         sysUserService.deleteUser(guid);
         response.success();
         return response;

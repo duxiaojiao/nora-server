@@ -15,7 +15,7 @@ public class NoraServerApplication {
 
         SpringApplication.run(NoraServerApplication.class, args);
 
-        Desktop.getDesktop().browse(new URI("http://localhost:8100"));
+//        Desktop.getDesktop().browse(new URI("http://localhost:8100"));
     }
 
 }

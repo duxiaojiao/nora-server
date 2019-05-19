@@ -4,13 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.nora.common.utils.GuidUtil;
+import org.nora.modules.system.dto.MenuTreeDto;
 import org.nora.modules.system.entity.SysMenu;
 import org.nora.modules.system.mapper.SysMenuMapper;
 import org.nora.modules.system.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,7 +30,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public void addMenu(SysMenu menu) throws RuntimeException {
-        menu.setGuid(GuidUtil.GenerateGuid());
         sysMenuMapper.insert(menu);
     }
 
@@ -40,5 +41,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         Page<SysMenu> page = new Page<>(pageNum,pageSize);
         return sysMenuMapper.selectPage(page,wrapper);
+    }
+
+    @Override
+    public List<MenuTreeDto> queryMenuTree() {
+
+        return null;
     }
 }

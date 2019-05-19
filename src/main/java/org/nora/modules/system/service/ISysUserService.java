@@ -35,4 +35,10 @@ public interface ISysUserService extends IService<SysUser> {
      */
     void deleteUser(String guid);
 
+    /**
+     * 删除用户
+     * @param user
+     * @return
+     */
+    void editUser(SysUser user);
 }

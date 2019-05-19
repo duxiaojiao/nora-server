@@ -1,8 +1,11 @@
 package org.nora.modules.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.nora.modules.system.dto.MenuTreeDto;
 import org.nora.modules.system.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -27,5 +30,11 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @return
      */
     IPage<SysMenu> queryMenu(Integer pageNum, Integer pageSize, String search);
+
+    /**
+     * 查询菜单树
+     * @return
+     */
+    List<MenuTreeDto> queryMenuTree();
 
 }

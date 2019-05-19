@@ -3,7 +3,6 @@ package org.nora.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.nora.common.utils.GuidUtil;
 import org.nora.modules.system.entity.SysUser;
 import org.nora.modules.system.mapper.SysUserMapper;
 import org.nora.modules.system.service.ISysUserService;
@@ -30,7 +29,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void addUser(SysUser user) throws RuntimeException {
 
-        user.setGuid(GuidUtil.GenerateGuid());
         user.setLocked(true); //有效
         user.setPassword("123456");
         try {
@@ -55,6 +53,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void deleteUser(String guid) {
-        int i = sysUserMapper.deleteById(guid);
+        sysUserMapper.deleteById(guid);
+    }
+
+    @Override
+    public void editUser(SysUser user) {
+        sysUserMapper.updateById(user);
     }
 }

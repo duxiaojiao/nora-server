@@ -8,6 +8,8 @@ import org.nora.modules.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * <p>
  * 角色表 前端控制器
@@ -27,6 +29,23 @@ public class SysRoleController {
     public ResponseType<String> addRole(@RequestBody SysRole role) {
         ResponseType<String> response = new ResponseType<String>();
         sysRoleService.addRole(role);
+        response.success();
+        return response;
+    }
+
+    @PostMapping(value = "editRole")
+    public ResponseType<String> editRole(@RequestBody SysRole role) {
+        ResponseType<String> response = new ResponseType<String>();
+        sysRoleService.updateById(role);
+        response.success();
+        return response;
+    }
+
+    @PostMapping(value = "deleteRole")
+    public ResponseType<String> deleteRole(@RequestBody Map<String, Object> param) {
+        ResponseType<String> response = new ResponseType<String>();
+        String guid = (String) param.get("guid");
+        sysRoleService.removeById(guid);
         response.success();
         return response;
     }
