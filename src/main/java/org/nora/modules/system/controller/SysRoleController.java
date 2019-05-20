@@ -1,14 +1,21 @@
 package org.nora.modules.system.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.common.responses.ResponseType;
+import org.nora.modules.system.dto.RoleSelectMenuTreeDto;
+import org.nora.modules.system.entity.SysMenu;
 import org.nora.modules.system.entity.SysRole;
+import org.nora.modules.system.service.ISysMenuService;
 import org.nora.modules.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -24,6 +31,9 @@ public class SysRoleController {
 
     @Autowired
     private ISysRoleService sysRoleService;
+
+    @Autowired
+    private ISysMenuService sysMenuService;
 
     @PostMapping(value = "addRole")
     public ResponseType<String> addRole(@RequestBody SysRole role) {
@@ -56,6 +66,42 @@ public class SysRoleController {
         IPage<SysRole> roleIPage = sysRoleService.queryRole(pageNum, pageSize, search);
         response.success(roleIPage);
         return response;
+    }
+
+    @GetMapping(value = "queryRoleSelectMenuTree")
+    public ResponseType<List<RoleSelectMenuTreeDto>> queryUser(){
+        ResponseType<List<RoleSelectMenuTreeDto>> response = new ResponseType<>();
+        List<RoleSelectMenuTreeDto> RoleMenuenuSelectTrees=new ArrayList<>();
+        List<SysMenu> menus = sysMenuService.list(new LambdaQueryWrapper<>());
+        for (SysMenu menu : menus) {
+            RoleSelectMenuTreeDto tree = new RoleSelectMenuTreeDto();
+            tree.setTitle(menu.getMenuName());
+            tree.setValue(menu.getGuid());
+            tree.setKey(menu.getGuid());
+            tree.setParentId(menu.getParentId());
+            tree.setChecked(true);
+            RoleMenuenuSelectTrees.add(tree);
+        }
+        List<RoleSelectMenuTreeDto> tree = this.getRoleMenuSelectTree(RoleMenuenuSelectTrees, "");
+        return response.success(tree);
+    }
+
+    //递归菜单形成菜单选择树
+    private List<RoleSelectMenuTreeDto> getRoleMenuSelectTree(List<RoleSelectMenuTreeDto> roleMenuTrees,String parentId){
+        //根据父节点寻找所有的子节点
+        List<RoleSelectMenuTreeDto> children = roleMenuTrees.stream().filter(menu -> parentId.equals(menu.getParentId())).collect(Collectors.toList());
+        List<RoleSelectMenuTreeDto> successor = roleMenuTrees.stream().filter(menu -> !parentId.equals(menu.getParentId())).collect(Collectors.toList());
+        children.forEach(x ->
+                {
+                    List<RoleSelectMenuTreeDto> tree = getRoleMenuSelectTree(successor, x.getKey());
+                    if (tree.size() > 0) {
+                        List<RoleSelectMenuTreeDto> temp = new ArrayList<>();
+                        x.setChildren(temp);
+                        tree.forEach(y -> x.getChildren().add(y));
+                    }
+                }
+        );
+        return children;
     }
 
 }

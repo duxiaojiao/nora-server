@@ -11,7 +11,7 @@
     <groupId>org.nora</groupId>
     <artifactId>noraserver</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>noraserver</name>
+    <name>noraServer</name>
     <description>nora项目后端</description>
 
     <properties>
