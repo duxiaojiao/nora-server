@@ -2,12 +2,16 @@ package org.nora.modules.system.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.common.responses.ResponseType;
 import org.nora.modules.system.dto.RoleSelectMenuTreeDto;
 import org.nora.modules.system.entity.SysMenu;
 import org.nora.modules.system.entity.SysRole;
+import org.nora.modules.system.entity.SysRoleMenu;
+import org.nora.modules.system.param.RoleMenuParam;
 import org.nora.modules.system.service.ISysMenuService;
+import org.nora.modules.system.service.ISysRoleMenuService;
 import org.nora.modules.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +39,9 @@ public class SysRoleController {
     @Autowired
     private ISysMenuService sysMenuService;
 
+    @Autowired
+    private ISysRoleMenuService sysRoleMenuService;
+
     @PostMapping(value = "addRole")
     public ResponseType<String> addRole(@RequestBody SysRole role) {
         ResponseType<String> response = new ResponseType<String>();
@@ -50,6 +57,25 @@ public class SysRoleController {
         response.success();
         return response;
     }
+
+    @PostMapping(value = "saveRoleMenu")
+    public ResponseType<String> saveRoleMenu(@RequestBody RoleMenuParam roleMenu) {
+        ResponseType<String> response = new ResponseType<>();
+        sysRoleMenuService.saveRoleMenu(roleMenu);
+        response.success();
+        return response;
+    }
+
+    @GetMapping(value = "queryRoleMenu")
+    public ResponseType<List<String>> queryRoleMenu(@RequestParam(value = "roleId") String roleId) {
+        ResponseType<List<String>> response = new ResponseType<>();
+        List<SysRoleMenu> list = sysRoleMenuService.list(new QueryWrapper<SysRoleMenu>().lambda().eq(SysRoleMenu::getRoleId, roleId));
+        List<String> menuIds = list.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
+        response.success(menuIds);
+        return response;
+    }
+
+
 
     @PostMapping(value = "deleteRole")
     public ResponseType<String> deleteRole(@RequestBody Map<String, Object> param) {
