@@ -1,7 +1,7 @@
 package org.nora.modules.system.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -11,16 +11,16 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 角色授权表
+ * 用户角色表
  * </p>
  *
  * @author taylor
- * @since 2019-05-20
+ * @since 2019-05-23
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SysRoleMenu implements Serializable {
+public class SysUserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,14 +31,15 @@ public class SysRoleMenu implements Serializable {
     private String guid;
 
     /**
+     * 用户ID
+     */
+    private String userId;
+
+    /**
      * 角色ID
      */
     private String roleId;
 
-    /**
-     * 菜单ID
-     */
-    private String menuId;
     /**
      * 创建人
      */

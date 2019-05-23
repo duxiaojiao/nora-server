@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.modules.system.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 系统用户表 服务类
@@ -40,5 +42,13 @@ public interface ISysUserService extends IService<SysUser> {
      * @param user
      * @return
      */
-    void editUser(SysUser user);
+    void editUser(SysUser user, List<String> roleIds);
+
+    /**
+     * 根据用户ID获取角色
+     *
+     * @param guid
+     * @return
+     */
+    List<String> getRoleIds(String guid);
 }

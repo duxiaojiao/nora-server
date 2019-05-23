@@ -1,15 +1,24 @@
 package org.nora.modules.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.nora.modules.system.entity.SysUser;
+import org.nora.modules.system.entity.SysUserRole;
 import org.nora.modules.system.mapper.SysUserMapper;
+import org.nora.modules.system.mapper.SysUserRoleMapper;
+import org.nora.modules.system.service.ISysUserRoleService;
 import org.nora.modules.system.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,6 +34,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private ISysUserRoleService userRoleService;
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public void addUser(SysUser user) throws RuntimeException {
@@ -57,7 +70,31 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void editUser(SysUser user) {
+    @Transactional
+    public void editUser(SysUser user,List<String> roleIds) {
         sysUserMapper.updateById(user);
+        sysUserRoleMapper.delete(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, user.getGuid()));
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            for (String roleId : roleIds) {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(user.getGuid());
+                userRole.setRoleId(roleId);
+                sysUserRoleMapper.insert(userRole);
+            }
+        }
+
+    }
+
+    @Override
+    public List<String> getRoleIds(String guid) {
+        List<String> list = new ArrayList<>();
+        List<SysUserRole> userRole = userRoleService.list(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, guid));
+        if(userRole.size()>0){
+            for (SysUserRole sysUserRole : userRole) {
+                list.add(sysUserRole.getRoleId());
+            }
+        }
+        return list;
+
     }
 }
