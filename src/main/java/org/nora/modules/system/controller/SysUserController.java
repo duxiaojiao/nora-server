@@ -8,6 +8,7 @@ import org.nora.modules.system.dto.UserDto;
 import org.nora.modules.system.entity.SysUser;
 import org.nora.modules.system.param.UserParam;
 import org.nora.modules.system.service.ISysUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,12 @@ public class SysUserController {
 
 
     @PostMapping(value = "addUser")
-    public ResponseType<String> addUser(@RequestBody SysUser user) {
+    public ResponseType<String> addUser(@RequestBody UserParam userParam) {
         ResponseType<String> response = new ResponseType<String>();
         try {
-            sysUserService.addUser(user);
+            SysUser sysUser = new SysUser();
+            BeanUtils.copyProperties(userParam,sysUser);
+            sysUserService.addUser(sysUser,userParam.getRoleIds());
             response.setMsg(CommonConstant.Message.OPTION_SUCCESS);
         } catch (RuntimeException e) {
             response.setMsg(CommonConstant.Message.OPTION_FAILURE);

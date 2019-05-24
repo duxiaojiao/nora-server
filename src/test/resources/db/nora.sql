@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-05-23 17:34:51
+Date: 2019-05-24 18:15:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,7 @@ CREATE TABLE `sys_menu` (
   `menu_name` varchar(45) NOT NULL COMMENT '菜单名称',
   `menu_code` varchar(45) NOT NULL COMMENT '菜单编码',
   `parent_id` varchar(45) DEFAULT '' COMMENT '父菜单',
+  `router` varchar(45) DEFAULT NULL COMMENT '路由',
   `icon` varchar(45) DEFAULT NULL COMMENT '图标',
   `create_user` varchar(100) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -35,12 +36,12 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('341534427845856af76e2cf5bcf7657d', '测试子菜单', '01', '6d896fd89169e7be94842f82ade01d85', null, null, '2019-05-23 11:06:10', null, '2019-05-23 11:06:10');
-INSERT INTO `sys_menu` VALUES ('34b743cf685356d55d6794910a721ad9', '用户查询', 'userMgt', 'fd4984af191710c80fdf882a0476b0bb', null, null, '2019-05-20 09:46:06', null, '2019-05-20 09:46:06');
-INSERT INTO `sys_menu` VALUES ('3889a0aff840dccf0764de4a0b786bf8', '菜单管理', 'menuMgt', 'fd4984af191710c80fdf882a0476b0bb', null, null, '2019-05-20 09:47:21', null, '2019-05-20 09:47:21');
-INSERT INTO `sys_menu` VALUES ('6d896fd89169e7be94842f82ade01d85', '测试菜单', 'testMenu', '', null, null, '2019-05-20 09:47:43', null, '2019-05-20 09:47:43');
-INSERT INTO `sys_menu` VALUES ('eaf10c4341bea181d8532cb4e6c31fa2', '角色管理', 'roleMgt', 'fd4984af191710c80fdf882a0476b0bb', null, null, '2019-05-20 09:46:45', null, '2019-05-20 09:46:45');
-INSERT INTO `sys_menu` VALUES ('fd4984af191710c80fdf882a0476b0bb', '权限管理', 'authMgt', '', null, null, '2019-05-20 09:45:19', null, '2019-05-20 09:45:19');
+INSERT INTO `sys_menu` VALUES ('341534427845856af76e2cf5bcf7657d', '测试子菜单', '01', '6d896fd89169e7be94842f82ade01d85', null, null, null, '2019-05-23 11:06:10', null, '2019-05-23 11:06:10');
+INSERT INTO `sys_menu` VALUES ('34b743cf685356d55d6794910a721ad9', '用户管理', 'userMgt', 'fd4984af191710c80fdf882a0476b0bb', '/users', 'team', null, '2019-05-20 09:46:06', null, '2019-05-20 09:46:06');
+INSERT INTO `sys_menu` VALUES ('3889a0aff840dccf0764de4a0b786bf8', '菜单管理', 'menuMgt', 'fd4984af191710c80fdf882a0476b0bb', '/menus', 'profile', null, '2019-05-20 09:47:21', null, '2019-05-20 09:47:21');
+INSERT INTO `sys_menu` VALUES ('6d896fd89169e7be94842f82ade01d85', '测试菜单', 'testMenu', '', null, null, null, '2019-05-20 09:47:43', null, '2019-05-20 09:47:43');
+INSERT INTO `sys_menu` VALUES ('eaf10c4341bea181d8532cb4e6c31fa2', '角色管理', 'roleMgt', 'fd4984af191710c80fdf882a0476b0bb', '/roles', 'solution', null, '2019-05-20 09:46:45', null, '2019-05-20 09:46:45');
+INSERT INTO `sys_menu` VALUES ('fd4984af191710c80fdf882a0476b0bb', '权限管理', 'authMgt', '', null, 'setting', null, '2019-05-20 09:45:19', null, '2019-05-20 09:45:19');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -116,6 +117,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1111111111', 'S66156', '赵四', null, null, null, null, null, null, '2019-05-16 17:39:40', null, '2019-05-16 17:39:40');
+INSERT INTO `sys_user` VALUES ('94394a9ac0cc1a4bf8d9698d76eeca9d', '11', '22', '44', '33', '123456', null, '1', null, '2019-05-24 16:55:52', null, '2019-05-24 16:55:52');
 INSERT INTO `sys_user` VALUES ('qwertyu', 'S66157', '赵能', '12345@qq.com', '12456789432', '123456', null, '1', null, '2019-05-16 18:20:48', null, '2019-05-16 18:20:48');
 
 -- ----------------------------
@@ -136,6 +138,7 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1f44be093e3b7c82307c3196736caa9c', '94394a9ac0cc1a4bf8d9698d76eeca9d', 'f11473e3-4fd4-4965-90f2-3199bc9013ae', null, '2019-05-24 16:56:32', null, '2019-05-24 16:56:32');
 INSERT INTO `sys_user_role` VALUES ('5df4d0c317b0ab51aa41e650b19ac53b', 'qwertyu', '819b4ef66b6e6008da0ed8514b0a06e8', null, '2019-05-23 17:21:33', null, '2019-05-23 17:21:33');
 INSERT INTO `sys_user_role` VALUES ('d6d4e8e2589298024a8e17b3fbc29392', 'qwertyu', 'abaf0652272a44628b4f42dd23e26b5b', null, '2019-05-23 17:21:33', null, '2019-05-23 17:21:33');
 INSERT INTO `sys_user_role` VALUES ('ffaa65bb732953009774d0ca4d3f82d0', '1111111111', '819b4ef66b6e6008da0ed8514b0a06e8', null, '2019-05-23 16:21:47', null, '2019-05-23 16:21:47');

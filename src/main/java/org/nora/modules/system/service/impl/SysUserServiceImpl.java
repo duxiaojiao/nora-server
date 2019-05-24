@@ -40,12 +40,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    public void addUser(SysUser user) throws RuntimeException {
+    @Transactional
+    public void addUser(SysUser user,List<String> roleIds) throws RuntimeException {
 
         user.setLocked(true); //有效
         user.setPassword("123456");
         try {
             sysUserMapper.insert(user);
+            if (CollectionUtils.isNotEmpty(roleIds)) {
+                for (String roleId : roleIds) {
+                    SysUserRole userRole = new SysUserRole();
+                    userRole.setUserId(user.getGuid());
+                    userRole.setRoleId(roleId);
+                    sysUserRoleMapper.insert(userRole);
+                }
+            }
         } catch (Exception e) {
             throw new RuntimeException("添加用户失败");
         }

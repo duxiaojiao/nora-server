@@ -46,6 +46,11 @@ public class SysMenu implements Serializable {
     private String parentId;
 
     /**
+     * 路由
+     */
+    private String router;
+
+    /**
      * 图标
      */
     private String icon;

@@ -21,7 +21,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param user
      * @return
      */
-    void addUser(SysUser user) throws  RuntimeException;
+    void addUser(SysUser user,List<String> roleIds) throws  RuntimeException;
 
     /**
      * 通过关键词搜索分页

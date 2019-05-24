@@ -67,6 +67,7 @@ public class SysMenuController {
             tree.setMenuName(menu.getMenuName());
             tree.setMenuCode(menu.getMenuCode());
             tree.setParentId(menu.getParentId());
+            tree.setRouter(menu.getRouter());
             tree.setIcon(menu.getIcon());
             menuTrees.add(tree);
         }
