@@ -29,6 +29,10 @@ public class SysUser implements Serializable {
      */
     @TableId(type = IdType.UUID)
     private String guid;
+    /**
+     * 用户名
+     */
+    private String userName;
 
     /**
      * 员工工号
@@ -36,7 +40,7 @@ public class SysUser implements Serializable {
     private String empCode;
 
     /**
-     * 用户名
+     * 员工姓名
      */
     private String empName;
 

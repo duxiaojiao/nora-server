@@ -37,4 +37,6 @@ public interface ISysMenuService extends IService<SysMenu> {
      */
     List<MenuTreeDto> queryMenuTree();
 
+    List<SysMenu> queryUserMenuTree(String guid);
+
 }

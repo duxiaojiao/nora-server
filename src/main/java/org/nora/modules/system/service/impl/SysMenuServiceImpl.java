@@ -48,4 +48,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
         return null;
     }
+
+    @Override
+    public List<SysMenu> queryUserMenuTree(String guid) {
+        return sysMenuMapper.queryUserMenuTree(guid);
+    }
 }

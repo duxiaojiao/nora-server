@@ -2,8 +2,14 @@ package org.nora.modules.system.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.crypto.RandomNumberGenerator;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.nora.common.constlant.CommonConstant;
 import org.nora.common.responses.ResponseType;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.nora.modules.system.dto.UserDto;
 import org.nora.modules.system.entity.SysUser;
 import org.nora.modules.system.param.UserParam;
@@ -12,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -33,7 +40,7 @@ public class SysUserController {
 
     @PostMapping(value = "addUser")
     public ResponseType<String> addUser(@RequestBody UserParam userParam) {
-        ResponseType<String> response = new ResponseType<String>();
+        ResponseType<String> response = new ResponseType<>();
         try {
             SysUser sysUser = new SysUser();
             BeanUtils.copyProperties(userParam,sysUser);
@@ -50,12 +57,7 @@ public class SysUserController {
         ResponseType<String> response = new ResponseType<String>();
         try {
             SysUser sysUser = new SysUser();
-            sysUser.setGuid(userParam.getGuid());
-            sysUser.setEmpCode(userParam.getEmpCode());
-            sysUser.setEmpName(userParam.getEmpName());
-            sysUser.setEmail(userParam.getEmail());
-            sysUser.setPhone(userParam.getPhone());
-            sysUser.setLocked(userParam.getLocked());
+            BeanUtils.copyProperties(userParam,sysUser);
             sysUserService.editUser(sysUser,userParam.getRoleIds());
             response.setMsg(CommonConstant.Message.OPTION_SUCCESS);
         } catch (RuntimeException e) {
@@ -77,13 +79,7 @@ public class SysUserController {
         ResponseType<UserDto> response = new ResponseType<>();
         SysUser user = sysUserService.getById(guid);
         UserDto userDto = new UserDto();
-        userDto.setGuid(user.getGuid());
-        userDto.setGuid(user.getGuid());
-        userDto.setEmpCode(user.getEmpCode());
-        userDto.setEmpName(user.getEmpName());
-        userDto.setEmail(user.getEmail());
-        userDto.setPhone(user.getPhone());
-        userDto.setLocked(user.getLocked());
+        BeanUtils.copyProperties(user,userDto);
         userDto.setRoleIds(sysUserService.getRoleIds(guid));
         response.success(userDto);
         return response;
@@ -95,6 +91,33 @@ public class SysUserController {
         String guid = (String) param.get("guid");
         sysUserService.deleteUser(guid);
         response.success();
+        return response;
+    }
+
+    @PostMapping(value = "resetPwd")
+    public ResponseType<String> resetPwd(@RequestBody String request) {
+        ResponseType<String> response = new ResponseType<String>();
+        try {
+            JSONObject json = JSON.parseObject(request);
+            String guid= json.getString("guid");
+            String pwd = json.getString("password");
+            if (StringUtils.isBlank(pwd)) {
+                response.failure("无法更新密码：密码为空");
+            }
+            //密码加密
+            RandomNumberGenerator saltGen = new SecureRandomNumberGenerator();
+            String salt = saltGen.nextBytes().toBase64();
+            String hashedPwd = new Sha256Hash(pwd, salt, 1024).toBase64();
+
+            SysUser updateData = new SysUser();
+            updateData.setGuid(guid);
+            updateData.setPassword(hashedPwd);
+            updateData.setSalt(salt);
+            sysUserService.updateById(updateData);
+            response.success();
+        } catch (RuntimeException e) {
+            response.failure("修改密码失败");
+        }
         return response;
     }
 

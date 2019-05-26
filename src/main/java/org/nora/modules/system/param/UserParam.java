@@ -13,6 +13,7 @@ public class UserParam {
 
 
     private String guid;
+    private String userName;
     private String empCode;
     private String empName;
     private String email;

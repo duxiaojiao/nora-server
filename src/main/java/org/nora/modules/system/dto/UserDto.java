@@ -12,6 +12,8 @@ import java.util.List;
 public class UserDto {
 
     private String guid;
+    private String token;
+    private String userName;
     private String empCode;
     private String empName;
     private String email;
