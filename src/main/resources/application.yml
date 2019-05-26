@@ -13,5 +13,5 @@ spring:
 #         unauthorizedUrl: /account/page/403
 #         successUrl: /account/page/index
 
-#mybatis-plus:
-#  mapper-locations: classpath:mapper/*/*Mapper.xml
+mybatis-plus:
+  mapper-locations: classpath:mapper/*/*Mapper.xml
