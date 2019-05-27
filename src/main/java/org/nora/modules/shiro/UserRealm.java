@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 
-@Component
+@Component("authorizer")
 public class UserRealm extends AuthorizingRealm {
 
     private static final Logger log =LoggerFactory.getLogger(UserRealm.class);

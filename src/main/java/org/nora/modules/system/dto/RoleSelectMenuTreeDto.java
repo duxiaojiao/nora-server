@@ -16,6 +16,5 @@ public class RoleSelectMenuTreeDto {
     private String value;
     private String key;
     private String parentId;
-    private Boolean checked;
     private List<RoleSelectMenuTreeDto> children;
 }

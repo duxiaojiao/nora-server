@@ -2,12 +2,14 @@ package org.nora.modules.system.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nora.common.responses.ResponseType;
 import org.nora.modules.system.dto.MenuSelectTreeDto;
 import org.nora.modules.system.dto.MenuTreeDto;
 import org.nora.modules.system.entity.SysMenu;
 import org.nora.modules.system.service.ISysMenuService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,16 +61,17 @@ public class SysMenuController {
     public ResponseType<List<MenuTreeDto>> queryMenuTree(){
         ResponseType<List<MenuTreeDto>> response = new ResponseType<>();
         List<MenuTreeDto> menuTrees=new ArrayList<>();
-        List<SysMenu> menus = sysMenuService.list(new LambdaQueryWrapper<>());
+        List<SysMenu> menus = sysMenuService.list(new QueryWrapper<SysMenu>().orderByAsc("sorter"));
         for (SysMenu menu : menus) {
             MenuTreeDto tree = new MenuTreeDto();
-            tree.setGuid(menu.getGuid());
-            tree.setKey(menu.getGuid());
-            tree.setMenuName(menu.getMenuName());
-            tree.setMenuCode(menu.getMenuCode());
-            tree.setParentId(menu.getParentId());
-            tree.setRouter(menu.getRouter());
-            tree.setIcon(menu.getIcon());
+//            tree.setKey(menu.getGuid());
+            BeanUtils.copyProperties(menu,tree);
+//            tree.setGuid(menu.getGuid());
+//            tree.setMenuName(menu.getMenuName());
+//            tree.setMenuCode(menu.getMenuCode());
+//            tree.setParentId(menu.getParentId());
+//            tree.setRouter(menu.getRouter());
+//            tree.setIcon(menu.getIcon());
             menuTrees.add(tree);
         }
         List<MenuTreeDto> tree = this.getMenuTree(menuTrees, "");

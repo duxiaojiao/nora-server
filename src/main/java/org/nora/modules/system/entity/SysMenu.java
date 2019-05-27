@@ -54,6 +54,10 @@ public class SysMenu implements Serializable {
      * 图标
      */
     private String icon;
+    /**
+     * 菜单排序
+     */
+    private Integer sorter;
 
     /**
      * 创建人

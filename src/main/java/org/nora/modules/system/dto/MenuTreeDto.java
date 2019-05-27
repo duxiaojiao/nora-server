@@ -19,6 +19,7 @@ public class MenuTreeDto {
     private String parentId;
     private String router;
     private String icon;
+    private Integer sorter;
     private List<MenuTreeDto> children;
 
 }

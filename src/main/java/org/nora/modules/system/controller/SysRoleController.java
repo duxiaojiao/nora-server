@@ -95,17 +95,16 @@ public class SysRoleController {
     }
 
     @GetMapping(value = "queryRoleSelectMenuTree")
-    public ResponseType<List<RoleSelectMenuTreeDto>> queryUser(){
+    public ResponseType<List<RoleSelectMenuTreeDto>> queryRoleSelectMenuTree(){
         ResponseType<List<RoleSelectMenuTreeDto>> response = new ResponseType<>();
         List<RoleSelectMenuTreeDto> RoleMenuenuSelectTrees=new ArrayList<>();
-        List<SysMenu> menus = sysMenuService.list(new LambdaQueryWrapper<>());
+        List<SysMenu> menus = sysMenuService.list(new QueryWrapper<SysMenu>().orderByAsc("sorter"));
         for (SysMenu menu : menus) {
             RoleSelectMenuTreeDto tree = new RoleSelectMenuTreeDto();
             tree.setTitle(menu.getMenuName());
             tree.setValue(menu.getGuid());
             tree.setKey(menu.getGuid());
             tree.setParentId(menu.getParentId());
-            tree.setChecked(true);
             RoleMenuenuSelectTrees.add(tree);
         }
         List<RoleSelectMenuTreeDto> tree = this.getRoleMenuSelectTree(RoleMenuenuSelectTrees, "");
