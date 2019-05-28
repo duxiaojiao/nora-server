@@ -6,7 +6,7 @@ spring:
           driverClassName: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://localhost:3306/nora?serverTimezone=GMT&useUnicode=true&characterEncoding=utf-8
           username: root
-          password: password
+          password: root
 
 #       shiro:
 #         loginUrl: /account/page/401
