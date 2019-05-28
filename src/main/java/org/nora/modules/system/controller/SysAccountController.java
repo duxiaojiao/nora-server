@@ -12,6 +12,7 @@ import org.apache.shiro.subject.Subject;
 import org.nora.common.responses.ResponseType;
 import org.nora.common.utils.GuidUtil;
 import org.nora.modules.system.dto.MenuTreeDto;
+import org.nora.modules.system.dto.UserDetailDto;
 import org.nora.modules.system.dto.UserDto;
 import org.nora.modules.system.entity.SysMenu;
 import org.nora.modules.system.entity.SysUser;
@@ -149,17 +150,19 @@ public class SysAccountController {
         for (SysMenu menu : menus) {
             MenuTreeDto tree = new MenuTreeDto();
             BeanUtils.copyProperties(menu,tree);
-//            tree.setGuid(menu.getGuid());
-//            tree.setKey(menu.getGuid());
-//            tree.setMenuName(menu.getMenuName());
-//            tree.setMenuCode(menu.getMenuCode());
-//            tree.setParentId(menu.getParentId());
-//            tree.setRouter(menu.getRouter());
-//            tree.setIcon(menu.getIcon());
             menuTrees.add(tree);
         }
         List<MenuTreeDto> tree = this.getMenuTree(menuTrees, "");
         return response.success(tree);
+    }
+
+    @GetMapping(value = "queryUserDetail")
+    public ResponseType<UserDetailDto> queryUserDetail(){
+        ResponseType<UserDetailDto> response = new ResponseType<>();
+        UserDetailDto userDetail = new UserDetailDto();
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        BeanUtils.copyProperties(user,userDetail);
+        return response.success(userDetail);
     }
 
     //递归菜单形成菜单树
