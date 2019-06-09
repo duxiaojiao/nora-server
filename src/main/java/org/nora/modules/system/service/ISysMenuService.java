@@ -22,7 +22,14 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @param menu
      * @return
      */
-    void addMenu(SysMenu menu) throws  RuntimeException;
+    void addMenu(SysMenu menu,List<String> permissions) throws  RuntimeException;
+
+    /**
+     * 编辑角色
+     * @param menu
+     * @return
+     */
+    void editMenu(SysMenu menu,List<String> permissions) throws  RuntimeException;
 
     /**
      * 通过关键词搜索分页

@@ -13,16 +13,16 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 菜单表
+ * 菜单权限表
  * </p>
  *
  * @author taylor
- * @since 2019-05-17
+ * @since 2019-06-09
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SysMenu implements Serializable {
+public class SysMenuPermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,37 +33,14 @@ public class SysMenu implements Serializable {
     private String guid;
 
     /**
-     * 菜单名称
+     * 菜单ID
      */
-    private String menuName;
+    private String menuId;
 
     /**
-     * 菜单编码
+     * 权限
      */
-    private String menuCode;
-
-    /**
-     * 父菜单
-     */
-    private String parentId;
-
-    /**
-     * 路由
-     */
-    private String router;
-
-    /**
-     * 图标
-     */
-    private String icon;
-    /**
-     * 菜单类型
-     */
-    private String menuType;
-    /**
-     * 菜单排序
-     */
-    private Integer sorter;
+    private String permission;
 
     /**
      * 创建人

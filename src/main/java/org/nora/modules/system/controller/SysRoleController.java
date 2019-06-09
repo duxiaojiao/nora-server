@@ -4,6 +4,8 @@ package org.nora.modules.system.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.nora.common.annotation.PermInfo;
 import org.nora.common.responses.ResponseType;
 import org.nora.modules.system.dto.RoleSelectMenuTreeDto;
 import org.nora.modules.system.entity.SysMenu;
@@ -42,6 +44,8 @@ public class SysRoleController {
     @Autowired
     private ISysRoleMenuService sysRoleMenuService;
 
+    @PermInfo("新增角色")
+    @RequiresPermissions("system:role:add")
     @PostMapping(value = "addRole")
     public ResponseType<String> addRole(@RequestBody SysRole role) {
         ResponseType<String> response = new ResponseType<String>();

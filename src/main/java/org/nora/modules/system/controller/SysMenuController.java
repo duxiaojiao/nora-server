@@ -4,10 +4,16 @@ package org.nora.modules.system.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import org.nora.common.responses.ResponseType;
+import org.nora.common.utils.PermissionUtil;
 import org.nora.modules.system.dto.MenuSelectTreeDto;
 import org.nora.modules.system.dto.MenuTreeDto;
+import org.nora.modules.system.dto.PermissionDto;
 import org.nora.modules.system.entity.SysMenu;
+import org.nora.modules.system.entity.SysMenuPermission;
+import org.nora.modules.system.param.MenuParam;
+import org.nora.modules.system.service.ISysMenuPermissionService;
 import org.nora.modules.system.service.ISysMenuService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +38,25 @@ public class SysMenuController {
 
     @Autowired
     private ISysMenuService sysMenuService;
+    @Autowired
+    private ISysMenuPermissionService sysMenuPermissionService;
 
     @PostMapping(value = "addMenu")
-    public ResponseType<String> addRole(@RequestBody SysMenu menu) {
+    public ResponseType<String> addRole(@RequestBody MenuParam menuParam) {
         ResponseType<String> response = new ResponseType<String>();
-        sysMenuService.addMenu(menu);
+        SysMenu menu = new SysMenu();
+        BeanUtils.copyProperties(menuParam,menu);
+        sysMenuService.addMenu(menu,menuParam.getPermissions());
         response.success();
         return response;
     }
 
     @PostMapping(value = "editMenu")
-    public ResponseType<String> editMenu(@RequestBody SysMenu menu) {
+    public ResponseType<String> editMenu(@RequestBody MenuParam menuParam) {
         ResponseType<String> response = new ResponseType<String>();
-        sysMenuService.updateById(menu);
+        SysMenu menu = new SysMenu();
+        BeanUtils.copyProperties(menuParam,menu);
+        sysMenuService.editMenu(menu,menuParam.getPermissions());
         response.success();
         return response;
     }
@@ -64,14 +76,15 @@ public class SysMenuController {
         List<SysMenu> menus = sysMenuService.list(new QueryWrapper<SysMenu>().orderByAsc("sorter"));
         for (SysMenu menu : menus) {
             MenuTreeDto tree = new MenuTreeDto();
-//            tree.setKey(menu.getGuid());
-            BeanUtils.copyProperties(menu,tree);
-//            tree.setGuid(menu.getGuid());
-//            tree.setMenuName(menu.getMenuName());
-//            tree.setMenuCode(menu.getMenuCode());
-//            tree.setParentId(menu.getParentId());
-//            tree.setRouter(menu.getRouter());
-//            tree.setIcon(menu.getIcon());
+            BeanUtils.copyProperties(menu, tree);
+            List<SysMenuPermission> permissions = sysMenuPermissionService.list(new QueryWrapper<SysMenuPermission>().eq("menu_id", menu.getGuid()));
+            List<String> list = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(permissions)) {
+                for (SysMenuPermission permission : permissions) {
+                    list.add(permission.getPermission());
+                }
+            }
+            tree.setPermissions(list);
             menuTrees.add(tree);
         }
         List<MenuTreeDto> tree = this.getMenuTree(menuTrees, "");
@@ -82,7 +95,7 @@ public class SysMenuController {
     public ResponseType<List<MenuSelectTreeDto>> queryMenuSelectTree(){
         ResponseType<List<MenuSelectTreeDto>> response = new ResponseType<>();
         List<MenuSelectTreeDto> menuSelectTrees=new ArrayList<>();
-        List<SysMenu> menus = sysMenuService.list(new LambdaQueryWrapper<>());
+        List<SysMenu> menus = sysMenuService.list(new QueryWrapper<SysMenu>().ne("menu_type","3"));
         for (SysMenu menu : menus) {
             MenuSelectTreeDto tree = new MenuSelectTreeDto();
             tree.setTitle(menu.getMenuName());
@@ -102,6 +115,13 @@ public class SysMenuController {
         sysMenuService.removeById(guid);
         response.success();
         return response;
+    }
+
+    @GetMapping(value = "queryMenuPermission")
+    public ResponseType<List<PermissionDto>> queryMenuPermission(){
+        ResponseType<List<PermissionDto>> response = new ResponseType<>();
+        List<PermissionDto> permissionDtos = PermissionUtil.listPermission();
+        return response.success(permissionDtos);
     }
 
     //递归菜单形成菜单树

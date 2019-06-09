@@ -11,6 +11,7 @@
         LEFT JOIN sys_user su ON su.guid = sur.user_id
         WHERE
         su.guid = #{guid}
+        and sm.menu_type &lt;&gt;'3'
         order by sm.sorter
     </select>
 

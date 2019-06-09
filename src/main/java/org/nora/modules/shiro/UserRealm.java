@@ -12,8 +12,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.nora.modules.system.entity.SysUser;
-import org.nora.modules.system.service.ISysMenuService;
-import org.nora.modules.system.service.ISysRoleService;
+import org.nora.modules.system.mapper.SysMenuPermissionMapper;
 import org.nora.modules.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +30,7 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private ISysUserService userService;
     @Autowired
-    private ISysRoleService roleService;
-    @Autowired
-    private ISysMenuService menuService;
+    private SysMenuPermissionMapper permissionMapper;
 
 
     @Override
@@ -52,25 +49,14 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
         SysUser user = (SysUser) getAvailablePrincipal(principals);
-        String userName = user.getUserName();
-        SysUser sysUser = userService.getOne(new QueryWrapper<SysUser>().eq("user_name", userName));
-        String guid = sysUser.getGuid();
-        List<String> roleIds = userService.getRoleIds(guid);
-
+//        String userName = user.getUserName();
+//        SysUser sysUser = userService.getOne(new QueryWrapper<SysUser>().eq("user_name", userName));
+//        String guid = sysUser.getGuid();
+        List<String> roleIds = userService.getRoleIds(user.getGuid());
+        List<String> permissions = permissionMapper.getUserPermissions(user.getGuid());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        /**
-         * 设置该用户拥有的角色，比如“admin,test”
-         */
         info.setRoles(new HashSet<>(roleIds));
-
-//        Set<AuthVo> roles = user.getRoles();
-//        Set<AuthVo> perms = user.getPerms();
-//        log.info("获取角色权限信息: roles: {}, perms: {}",roles,perms);
-//
-//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        info.setRoles(roles.stream().map(AuthVo::getVal).collect(Collectors.toSet()));
-//        info.setStringPermissions(perms.stream().map(AuthVo::getVal).collect(Collectors.toSet()));
-//        return info;
+        info.setStringPermissions(new HashSet<>(permissions));
         return info;
     }
 

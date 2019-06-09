@@ -51,7 +51,7 @@ public class MysqlGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         //gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setOutputDir("D://Users/j_long/Desktop/autoCode");
+        gc.setOutputDir("C:\\Users\\Taylor\\Desktop\\mybatis");
         gc.setFileOverride(true);// 是否覆盖文件
         gc.setAuthor("taylor");
         gc.setOpen(false);
@@ -84,7 +84,7 @@ public class MysqlGenerator {
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("password");
+        dsc.setPassword("root");
         mpg.setDataSource(dsc);
 
         // 包配置

@@ -3,9 +3,11 @@ package org.nora.modules.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.nora.common.annotation.PermInfo;
 import org.nora.common.constlant.CommonConstant;
 import org.nora.common.responses.ResponseType;
 import com.alibaba.fastjson.JSON;
@@ -37,7 +39,8 @@ public class SysUserController {
     @Autowired
     private ISysUserService sysUserService;
 
-
+    @PermInfo("新增用户")
+    @RequiresPermissions("system:user:add")
     @PostMapping(value = "addUser")
     public ResponseType<String> addUser(@RequestBody UserParam userParam) {
         ResponseType<String> response = new ResponseType<>();
@@ -52,6 +55,8 @@ public class SysUserController {
         return response;
     }
 
+    @PermInfo("编辑用户")
+    @RequiresPermissions("system:user:edit")
     @PostMapping(value = "editUser")
     public ResponseType<String> editUser(@RequestBody UserParam userParam) {
         ResponseType<String> response = new ResponseType<String>();
@@ -66,6 +71,8 @@ public class SysUserController {
         return response;
     }
 
+    @PermInfo("查询用户")
+    @RequiresPermissions("system:user:query")
     @GetMapping(value = "queryUser")
     public ResponseType<IPage<SysUser>> queryUser(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,@RequestParam(value = "search", defaultValue = "") String search){
         ResponseType<IPage<SysUser>> response = new ResponseType<>();

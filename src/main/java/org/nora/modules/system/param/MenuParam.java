@@ -1,19 +1,18 @@
-package org.nora.modules.system.dto;
+package org.nora.modules.system.param;
 
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class MenuTreeDto {
+public class MenuParam {
 
     private String guid;
-    private String key;
     private String menuName;
     private String menuCode;
     private String parentId;
@@ -22,6 +21,4 @@ public class MenuTreeDto {
     private String menuType;
     private List<String> permissions;
     private Integer sorter;
-    private List<MenuTreeDto> children;
-
 }
