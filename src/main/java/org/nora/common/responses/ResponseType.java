@@ -70,5 +70,10 @@ public class ResponseType<T> implements Serializable {
         this.msg = msg;
         return self();
     }
+    public ResponseType failure(String code,String msg) {
+        this.code = code;
+        this.msg = msg;
+        return self();
+    }
 
 }

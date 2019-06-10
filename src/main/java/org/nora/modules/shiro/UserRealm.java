@@ -17,6 +17,7 @@ import org.nora.modules.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -28,8 +29,10 @@ public class UserRealm extends AuthorizingRealm {
     private static final Logger log =LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
+    @Lazy
     private ISysUserService userService;
     @Autowired
+    @Lazy
     private SysMenuPermissionMapper permissionMapper;
 
 
@@ -49,9 +52,6 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
         SysUser user = (SysUser) getAvailablePrincipal(principals);
-//        String userName = user.getUserName();
-//        SysUser sysUser = userService.getOne(new QueryWrapper<SysUser>().eq("user_name", userName));
-//        String guid = sysUser.getGuid();
         List<String> roleIds = userService.getRoleIds(user.getGuid());
         List<String> permissions = permissionMapper.getUserPermissions(user.getGuid());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -73,14 +73,6 @@ public class UserRealm extends AuthorizingRealm {
         if (userDB == null) {
             throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
         }
-
-        //查询用户的角色和权限存到SimpleAuthenticationInfo中，这样在其它地方
-        //SecurityUtils.getSubject().getPrincipal()就能拿出用户的所有信息，包括角色和权限
-//        Set<AuthVo> roles = roleService.getRolesByUserId(userDB.getUid());
-//        Set<AuthVo> perms = permService.getPermsByUserId(userDB.getUid());
-//        userDB.getRoles().addAll(roles);
-//        userDB.getPerms().addAll(perms);
-
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userDB, userDB.getPassword(), getName());
         if (userDB.getSalt() != null) {
             info.setCredentialsSalt(ByteSource.Util.bytes(userDB.getSalt()));

@@ -46,34 +46,24 @@ public class SysAccountController {
     @Autowired
     private ISysMenuService sysMenuService;
 
-    /**
-     * shiro.loginUrl映射到这里，我在这里直接抛出异常交给GlobalExceptionHandler来统一返回json信息，
-     * 您也可以在这里直接返回json，不过这样子就跟GlobalExceptionHandler中返回的json重复了。
-     * @return
-     */
-    @RequestMapping("/page/401")
-    public ResponseType page401() {
-        throw new UnauthenticatedException();
+    @GetMapping("/401")
+    public ResponseType<String> page401() {
+        ResponseType<String> response = new ResponseType<>();
+        response.failure("501","请登录");
+        return response;
     }
 
-    /**
-     * shiro.unauthorizedUrl映射到这里。由于约定了url方式只做鉴权控制，不做权限访问控制，
-     * 也就是说在ShiroConfig中如果没有做roles[js],perms[mvn:install]这样的权限访问控制配置的话，是不会跳转到这里的。
-     * @return
-     */
-    @RequestMapping("/page/403")
-    public ResponseType page403() {
-        throw new UnauthorizedException();
-    }
-
-    /**
-     * 登录成功跳转到这里，直接返回json。但是实际情况是在login方法中登录成功后返回json了。
-     * @return
-     */
-    @RequestMapping("/page/index")
+    @GetMapping("/index")
     public ResponseType<String> pageIndex() {
         ResponseType<String> response = new ResponseType<>();
         response.success();
+        return response;
+    }
+
+    @GetMapping("/403")
+    public ResponseType<String> page403() {
+        ResponseType<String> response = new ResponseType<>();
+        response.failure("506","无操作权限");
         return response;
     }
 

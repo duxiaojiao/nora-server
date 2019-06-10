@@ -40,7 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (StringUtils.startsWithIgnoreCase(eMsg,GUEST_ONLY)){
             response.failure("只允许游客访问，若您已登录，请先退出登录");
         }else{
-            response.failure("用户未登录");
+            response.failure("501","用户未登录");
         }
 
         return response;
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseType<String> page403() {
         ResponseType<String> response = new ResponseType<>();
-        response.failure("用户没有访问权限");
+        response.failure("506","用户没有访问权限");
         return response;
     }
 
