@@ -29,10 +29,8 @@ public class UserRealm extends AuthorizingRealm {
     private static final Logger log =LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
-    @Lazy
     private ISysUserService userService;
     @Autowired
-    @Lazy
     private SysMenuPermissionMapper permissionMapper;
 
 
