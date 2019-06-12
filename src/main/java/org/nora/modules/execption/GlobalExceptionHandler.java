@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseType<String> page403() {
         ResponseType<String> response = new ResponseType<>();
-        response.failure(506,"用户没有访问权限");
+        response.failure(506,"没有操作权限，请联系管理员");
         return response;
     }
 

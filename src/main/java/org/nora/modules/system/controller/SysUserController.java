@@ -2,6 +2,7 @@ package org.nora.modules.system.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -32,6 +33,7 @@ import java.util.Map;
  * @author taylor
  * @since 2019-05-16
  */
+@Slf4j
 @RestController
 @RequestMapping("/system/sysUser")
 public class SysUserController {
@@ -50,7 +52,8 @@ public class SysUserController {
             sysUserService.addUser(sysUser,userParam.getRoleIds());
             response.setMsg(CommonConstant.Message.OPTION_SUCCESS);
         } catch (RuntimeException e) {
-            response.setMsg(CommonConstant.Message.OPTION_FAILURE);
+            response.failure("添加用户失败");
+            log.error("添加用户",e.getMessage(), e.getStackTrace());
         }
         return response;
     }
@@ -92,6 +95,8 @@ public class SysUserController {
         return response;
     }
 
+    @PermInfo("删除用户")
+    @RequiresPermissions("system:user:delete")
     @PostMapping(value = "deleteUser")
     public ResponseType<String> deleteUser(@RequestBody Map<String, Object> param) {
         ResponseType<String> response = new ResponseType<String>();
@@ -101,6 +106,8 @@ public class SysUserController {
         return response;
     }
 
+    @PermInfo("重置密码")
+    @RequiresPermissions("system:user:resetPwd")
     @PostMapping(value = "resetPwd")
     public ResponseType<String> resetPwd(@RequestBody String request) {
         ResponseType<String> response = new ResponseType<String>();
