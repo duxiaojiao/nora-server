@@ -66,6 +66,7 @@ public class SysRoleController {
     public ResponseType<String> saveRoleMenu(@RequestBody RoleMenuParam roleMenu) {
         ResponseType<String> response = new ResponseType<>();
         sysRoleMenuService.saveRoleMenu(roleMenu);
+        response.setMsg("保存成功");
         response.success();
         return response;
     }

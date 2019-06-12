@@ -10,7 +10,7 @@ public class ResponseType<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String code;
+    private Integer code;
     private String msg;
     private T data;
     private long timestamp = System.currentTimeMillis();
@@ -27,7 +27,7 @@ public class ResponseType<T> implements Serializable {
         return this;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
@@ -70,7 +70,7 @@ public class ResponseType<T> implements Serializable {
         this.msg = msg;
         return self();
     }
-    public ResponseType failure(String code,String msg) {
+    public ResponseType failure(Integer code,String msg) {
         this.code = code;
         this.msg = msg;
         return self();

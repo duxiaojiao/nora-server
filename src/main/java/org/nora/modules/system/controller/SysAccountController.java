@@ -49,7 +49,7 @@ public class SysAccountController {
     @GetMapping("/401")
     public ResponseType<String> page401() {
         ResponseType<String> response = new ResponseType<>();
-        response.failure("501","请登录");
+        response.failure(501,"请登录");
         return response;
     }
 
@@ -63,7 +63,7 @@ public class SysAccountController {
     @GetMapping("/403")
     public ResponseType<String> page403() {
         ResponseType<String> response = new ResponseType<>();
-        response.failure("506","无操作权限");
+        response.failure(506,"无操作权限");
         return response;
     }
 

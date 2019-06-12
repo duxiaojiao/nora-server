@@ -9,6 +9,7 @@ import org.nora.modules.system.service.ISysRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 @Service
 public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements ISysRoleMenuService {
 
+    @Transactional
     @Override
     public void saveRoleMenu(RoleMenuParam roleMenu) {
         LambdaQueryWrapper<SysRoleMenu> query = new QueryWrapper<SysRoleMenu>().lambda().eq(SysRoleMenu::getRoleId, roleMenu.getRoleId());

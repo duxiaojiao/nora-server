@@ -7,9 +7,9 @@ public interface CommonConstant {
      */
      class ServerApp {
         /** 成功 **/
-        public final static String SERVER_RET_SUSSCESS = "0";
+        public final static Integer SERVER_RET_SUSSCESS = 0;
         /** 失败 **/
-        public final static String SERVER_RET_FAILURE = "1";
+        public final static Integer SERVER_RET_FAILURE = 1;
     }
 
     class Message {
