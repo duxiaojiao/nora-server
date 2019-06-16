@@ -1,23 +1,3 @@
-server:
-  port: 8100
-
 spring:
-       datasource:
-          driverClassName: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/nora?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
-          username: root
-          password: password
-
-#       shiro:
-#         loginUrl: /account/page/401
-#         unauthorizedUrl: /account/page/403
-#         successUrl: /account/page/index
-
-mybatis-plus:
-  mapper-locations: classpath:mapper/*/*Mapper.xml
-
-
-shiro:
-  loginUrl: /system/account/401
-  unauthorizedUrl: /system/account/403
-  successUrl: /system/account/index
+  profiles:
+    active: dev
